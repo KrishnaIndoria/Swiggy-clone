@@ -1,9 +1,10 @@
 import { useState,useEffect } from "react";
 import { useParams } from "react-router";
+import MenuCard from "./MenuCard";
 
 export default function RestaurantMenu(){
     const {id} = useParams();
-    const [RestData,setRestData] = useState(null);
+    const [RestData,setRestData] = useState([]);
     useEffect(() => {
         async function fetchData() {
           const proxyServer = "https://cors-anywhere.herokuapp.com/";
@@ -11,8 +12,9 @@ export default function RestaurantMenu(){
     
           const response = await fetch(proxyServer + swiggyServer);
           const data = await response.json();
-    
-          setRestData(data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants); 
+          const tempData = data?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+          const filterData = tempData.filter((item)=> 'title' in item?.card?.card)
+          setRestData(filterData); 
     
         }
     
@@ -20,7 +22,11 @@ export default function RestaurantMenu(){
       }, []);
 
       return(
-        <h2>hello {id}</h2>
+        <div className="w-[80%] mx-auto">
+          {
+          RestData.map((MenuItems)=> <MenuCard key={MenuItems?.card?.card?.title} MenuItems={MenuItems?.card?.card}></MenuCard>)
+          }
+        </div>
       )
     
 }
