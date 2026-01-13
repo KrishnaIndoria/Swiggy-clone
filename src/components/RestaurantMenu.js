@@ -3,6 +3,7 @@ import { Recommended } from "../Utils/Rest";
 import { Link } from "react-router";
 export default function RestaurantMenu(){
   const [selected,setSlected] = useState(null);
+  const [count,setcount] = useState(0);
 
   if(selected=="veg"){
     return(
@@ -92,7 +93,15 @@ export default function RestaurantMenu(){
 
           <div>
             <img className="object-cover h-36 w-39 rounded-2xl transform hover:cursor-pointer" src={"https://media-assets.swiggy.com/swiggy/image/upload/"+item.imageId}></img>
-            <button className="relative bottom-6 left-5 bg-white rounded-2xl text-green-600 text-[20px] font-bold border-2 border-gray-300 w-30 h-10 transform hover:bg-gray-300 hover:cursor-pointer hover:scale-110">ADD</button>
+            {
+              count===0?(<button className="relative bottom-6 left-5 bg-white rounded-2xl text-green-600 text-[20px] font-bold border-2 border-gray-300 w-30 h-10 transform hover:bg-gray-300 hover:cursor-pointer hover:scale-110" onClick={()=>setcount(1)}>ADD</button>):(
+               <div className="text-center text-2xl relative bottom-6 left-5 bg-white rounded-2xl text-green-600 font-bold border-2 border-gray-300 w-30 h-10 ">
+                <button onClick={()=>setcount(count-1)} className="hover:cursor-pointer">-</button>
+                <span className="mx-4">{count}</span>
+                <button onClick={()=>setcount(count+1)} className="hover:cursor-pointer">+</button>
+               </div>
+              )
+            }
           </div>
         </div>
         )
